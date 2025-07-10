@@ -1,0 +1,17 @@
+[project]
+name = "sentinel"
+version = "0.1.0"
+description = "FastAPI-based GenAI MVP app with FAISS and OpenAI"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "openai",
+    "faiss-cpu",
+    "python-dotenv",
+    "pymongo",
+]
+
+[tool.uv]
+dev-dependencies = []
