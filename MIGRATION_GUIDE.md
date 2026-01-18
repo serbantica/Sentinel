@@ -284,12 +284,13 @@ device/logs/
 ```bash
 # In the ai-companion-orchestrator directory
 git add .
-git commit -m "Initial repository structure and documentation
 
-- Added core module structure
-- Added dashboard and device runtime placeholders
-- Imported documentation from Sentinel repo
-- Created README with project overview"
+# Create a multi-line commit message
+git commit -m "Initial repository structure and documentation" \
+           -m "- Added core module structure" \
+           -m "- Added dashboard and device runtime placeholders" \
+           -m "- Imported documentation from Sentinel repo" \
+           -m "- Created README with project overview"
 
 git push origin main
 ```
@@ -307,14 +308,13 @@ cd /path/to/Sentinel
 # Remove the Docs folder
 git rm -r Docs/
 
-# Commit the removal
-git commit -m "Move AI Companion Orchestration docs to separate repository
-
-The Docs folder contained proposals for a different product
-(AI Companion Orchestrator) which has been moved to its own
-repository at: https://github.com/YOUR_USERNAME/ai-companion-orchestrator
-
-See DOCS_ANALYSIS.md for details on why these projects are separate."
+# Commit the removal with multi-line message
+git commit -m "Move AI Companion Orchestration docs to separate repository" \
+           -m "The Docs folder contained proposals for a different product" \
+           -m "(AI Companion Orchestrator) which has been moved to its own" \
+           -m "repository at: https://github.com/{username}/ai-companion-orchestrator" \
+           -m "" \
+           -m "See DOCS_ANALYSIS.md for details on why these projects are separate."
 
 git push origin main
 ```
@@ -333,7 +333,7 @@ Add (already done):
 ```markdown
 ## Related Projects
 
-- [AI Companion Orchestrator](https://github.com/YOUR_USERNAME/ai-companion-orchestrator) - Multi-device companion platform for elderly care (separate project)
+- [AI Companion Orchestrator](https://github.com/{username}/ai-companion-orchestrator) - Multi-device companion platform for elderly care (separate project)
 ```
 
 ### In Orchestrator README
