@@ -1,55 +1,174 @@
-# Migration Guide: Separating AI Companion Orchestrator from Sentinel
+# Migration Guide: Separating AI Nanny from Sentinel
 
 ## Overview
 
-This guide provides step-by-step instructions for creating a new repository for the AI Companion Orchestration Platform and removing it from the Sentinel repository.
+This guide provides step-by-step instructions for creating a new repository for the AI Companion Orchestration Platform (AI Nanny) and migrating documentation from the Sentinel repository while preserving git history.
+
+**Target Repository:** `serbantica/ai-nanny`
 
 ## Prerequisites
 
 - GitHub account with repository creation access
 - Git command line tools
 - Understanding of both project proposals (see DOCS_ANALYSIS.md)
+- Familiarity with `git subtree` or `git filter-repo`
 
 ---
 
-## Step 1: Create the New Repository
+## Quick Migration Using Git Subtree (Recommended)
+
+The `git subtree` approach is the easiest way to extract the Docs folder while preserving its commit history.
+
+### Step 1: Extract Docs History
+
+```bash
+# In the Sentinel repository
+cd /path/to/Sentinel
+
+# Create a new branch containing only the Docs folder history
+git subtree split -P Docs -b ai-nanny-docs
+
+# Verify the branch was created
+git log ai-nanny-docs --oneline
+```
+
+### Step 2: Create the New Repository
+
+#### Option A: Via GitHub Web Interface
+
+1. Go to https://github.com/new
+2. **Repository name:** `ai-nanny`
+3. **Owner:** `serbantica`
+4. **Description:** "AI Companion Orchestration Platform for elderly care with multi-device coordination"
+5. **Visibility:** Choose Public or Private
+6. **Initialize:** Do NOT initialize with README, .gitignore, or license (we'll push these)
+7. Click "Create repository"
+
+#### Option B: Via GitHub CLI
+
+```bash
+gh repo create serbantica/ai-nanny --public --description "AI Companion Orchestration Platform for elderly care with multi-device coordination"
+```
+
+### Step 3: Push to New Repository
+
+```bash
+# Add the new repository as a remote
+git remote add ai-nanny git@github.com:serbantica/ai-nanny.git
+
+# Push the ai-nanny-docs branch to the new repository's main branch
+git push ai-nanny ai-nanny-docs:main
+
+# Verify the push
+git ls-remote ai-nanny
+```
+
+### Step 4: Clean Up (Optional)
+
+```bash
+# Remove the temporary branch (optional)
+git branch -D ai-nanny-docs
+
+# Remove the remote (optional, if you don't need it anymore)
+git remote remove ai-nanny
+```
+
+---
+
+## Alternative: Using git filter-repo (Advanced)
+
+For more complex history manipulation or if you need to filter specific files/commits, use `git filter-repo`.
+
+⚠️ **Warning:** This is a destructive operation. Always work on a fresh clone.
+
+### Installation
+
+```bash
+# Install git-filter-repo
+pip install git-filter-repo
+```
+
+### Usage
+
+```bash
+# Clone a fresh copy of Sentinel
+git clone https://github.com/serbantica/Sentinel.git sentinel-temp
+cd sentinel-temp
+
+# Extract only the Docs folder
+git filter-repo --path Docs/ --force
+
+# Create the new repo and push
+git remote add origin git@github.com:serbantica/ai-nanny.git
+git push -u origin main
+
+# Clean up
+cd ..
+rm -rf sentinel-temp
+```
+
+**Reference:** https://github.com/newren/git-filter-repo
+
+---
+
+## Alternative: Using git filter-branch (Legacy)
+
+⚠️ **Warning:** `git filter-branch` is deprecated. Use `git subtree` or `git filter-repo` instead.
+
+```bash
+# For reference only - not recommended
+git filter-branch --subdirectory-filter Docs -- --all
+```
+
+---
+
+## Step 1 (Detailed): Create the New Repository
 
 ### Option A: Via GitHub Web Interface
 
 1. Go to https://github.com/new
-2. **Repository name:** `ai-companion-orchestrator` (or your preferred name)
-3. **Description:** "Cloud-native orchestration engine for multi-persona AI companions with multi-device coordination"
-4. **Visibility:** Choose Public or Private
-5. **Initialize:** Do NOT initialize with README, .gitignore, or license (we'll add these)
-6. Click "Create repository"
+2. **Repository name:** `ai-nanny`
+3. **Owner:** `serbantica`
+4. **Description:** "AI Companion Orchestration Platform for elderly care with multi-device coordination"
+5. **Visibility:** Choose Public or Private
+6. **Initialize:** Do NOT initialize with README, .gitignore, or license (we'll add these)
+7. Click "Create repository"
 
 ### Option B: Via GitHub CLI
 
 ```bash
-gh repo create ai-companion-orchestrator --public --description "Cloud-native orchestration engine for multi-persona AI companions"
+gh repo create serbantica/ai-nanny --public --description "AI Companion Orchestration Platform for elderly care with multi-device coordination"
 ```
 
 ---
 
 ## Step 2: Set Up the New Repository Structure
 
-Clone the new repository and create the initial structure:
+After creating the repository and pushing the Docs history, you can set up the new repository structure.
 
 ```bash
 # Clone the new repository
-git clone https://github.com/YOUR_USERNAME/ai-companion-orchestrator.git
-cd ai-companion-orchestrator
+git clone git@github.com:serbantica/ai-nanny.git
+cd ai-nanny
 
-# Create directory structure
+# The repository now contains the documentation from Sentinel's Docs folder
+# You can reorganize or add additional structure as needed
+
+# Create directory structure for implementation
 mkdir -p core
 mkdir -p dashboard/components
 mkdir -p device
 mkdir -p personas
 mkdir -p tests
 mkdir -p config
-mkdir -p docs
 
-# Create placeholder files
+# The docs from Docs/ are now in the root
+# You may want to move them to a docs/ subdirectory:
+mkdir -p docs
+mv *.md docs/ 2>/dev/null || true
+mv *.txt docs/ 2>/dev/null || true
+
+# Create placeholder files for implementation
 touch core/__init__.py
 touch core/persona_manager.py
 touch core/conversation_engine.py
@@ -66,28 +185,12 @@ touch config/.env.example
 
 ---
 
-## Step 3: Copy Documentation from Sentinel
+## Step 3: Create README for New Repository
 
-```bash
-# Assuming you're in the ai-companion-orchestrator directory
-# and the Sentinel repo is cloned at ../Sentinel
-
-# Copy the Docs folder contents
-cp ../Sentinel/Docs/AI\ Nanny\ Platform\ –\ Persona\ Customization.md docs/
-cp ../Sentinel/Docs/AI-Companion-Orchestration-Platform.1.txt docs/
-cp ../Sentinel/Docs/AI-Companion-Software-Dev.md docs/
-
-# Optional: Clean up Test.txt if not needed
-```
-
----
-
-## Step 4: Create README for New Repository
-
-Create `README.md` in the ai-companion-orchestrator repository:
+Create or update `README.md` in the ai-nanny repository:
 
 ```markdown
-# AI Companion Orchestration Platform
+# AI Nanny - AI Companion Orchestration Platform
 
 Cloud-native orchestration engine enabling multi-persona AI companions with multi-device coordination for elderly care and assisted living facilities.
 
@@ -124,7 +227,7 @@ This platform enables:
 ## Project Structure
 
 ```
-ai-companion-orchestrator/
+ai-nanny/
 ├── core/                    # Core orchestration engine
 │   ├── persona_manager.py
 │   ├── conversation_engine.py
@@ -188,15 +291,15 @@ ai-companion-orchestrator/
 
 ---
 
-## Step 5: Create pyproject.toml for New Repository
+## Step 4: Create pyproject.toml for New Repository
 
 Create `pyproject.toml`:
 
 ```toml
 [project]
-name = "ai-companion-orchestrator"
+name = "ai-nanny"
 version = "0.1.0"
-description = "Cloud-native orchestration engine for multi-persona AI companions"
+description = "AI Companion Orchestration Platform for elderly care with multi-device coordination"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -231,7 +334,7 @@ dev-dependencies = [
 
 ---
 
-## Step 6: Create .gitignore
+## Step 5: Create .gitignore
 
 Create `.gitignore`:
 
@@ -279,10 +382,10 @@ device/logs/
 
 ---
 
-## Step 7: Initial Commit and Push
+## Step 6: Initial Commit and Push
 
 ```bash
-# In the ai-companion-orchestrator directory
+# In the ai-nanny directory
 git add .
 
 # Create a multi-line commit message
@@ -297,48 +400,26 @@ git push origin main
 
 ---
 
-## Step 8: Clean Up Sentinel Repository
+## Step 7: Verify Migration in Sentinel Repository
 
-### Remove Docs Folder from Sentinel
+The Sentinel repository has already been updated:
+- Documentation moved to `migrated/ai-nanny-docs/` staging area
+- `Docs/` folder now contains only a pointer README.md
+- Root README.md updated with repository separation notice
 
-```bash
-# In the Sentinel repository directory
-cd /path/to/Sentinel
-
-# Remove the Docs folder
-git rm -r Docs/
-
-# Commit the removal with multi-line message
-git commit -m "Move AI Companion Orchestration docs to separate repository" \
-           -m "The Docs folder contained proposals for a different product" \
-           -m "(AI Companion Orchestrator) which has been moved to its own" \
-           -m "repository at: https://github.com/{username}/ai-companion-orchestrator" \
-           -m "" \
-           -m "See DOCS_ANALYSIS.md for details on why these projects are separate."
-
-git push origin main
-```
-
-### Update Sentinel's README
-
-The README has already been updated to clarify the project focus and reference the DOCS_ANALYSIS.md file.
+No additional cleanup needed in Sentinel - the migration is complete!
 
 ---
 
-## Step 9: Cross-Reference Both Projects
+## Step 8: Cross-Reference Both Projects
 
 ### In Sentinel README
 
-Add (already done):
-```markdown
-## Related Projects
+Already updated with repository separation section linking to `serbantica/ai-nanny`.
 
-- [AI Companion Orchestrator](https://github.com/{username}/ai-companion-orchestrator) - Multi-device companion platform for elderly care (separate project)
-```
+### In AI Nanny README
 
-### In Orchestrator README
-
-Add (already in template above):
+Add a reference back to Sentinel:
 ```markdown
 ## Related Projects
 
@@ -347,23 +428,13 @@ Add (already in template above):
 
 ---
 
-## Step 10: Optional - Create Organization
-
-If you want both projects under one umbrella:
-
-1. Create GitHub organization (e.g., "YourCompany-AI")
-2. Transfer both repositories to the organization
-3. Create organization README explaining both projects
-
----
-
-## Step 11: Update Documentation References
+## Step 9: Update Documentation References
 
 In the new repository, update any references that mention "Sentinel":
 
 ```bash
 # Search for Sentinel references
-cd ai-companion-orchestrator
+cd ai-nanny
 grep -r "Sentinel" docs/
 
 # Update as needed to clarify separation
@@ -375,14 +446,16 @@ grep -r "Sentinel" docs/
 
 After migration, verify:
 
-- [ ] New repository created and accessible
-- [ ] All documentation copied from Sentinel/Docs to new repo
+- [ ] New repository created at `serbantica/ai-nanny` and accessible
+- [ ] Git history from Docs folder preserved in new repo
+- [ ] All documentation from Sentinel/Docs pushed to new repo
 - [ ] New repo has proper README explaining the project
 - [ ] New repo has pyproject.toml with correct dependencies
 - [ ] New repo has .gitignore
 - [ ] New repo has initial directory structure
-- [ ] Sentinel repo has Docs folder removed
-- [ ] Sentinel README updated with clarification
+- [ ] Sentinel repo has migrated/ai-nanny-docs/ staging area
+- [ ] Sentinel repo Docs/ folder replaced with pointer README.md
+- [ ] Sentinel README updated with repository separation notice
 - [ ] Both repositories cross-reference each other
 - [ ] DOCS_ANALYSIS.md remains in Sentinel for historical context
 
@@ -401,12 +474,13 @@ If you encounter issues during migration:
 1. Check that you have correct permissions on both repositories
 2. Verify Git remote URLs are correct
 3. Review DOCS_ANALYSIS.md for context on why separation is needed
+4. Consult SEPARATION_NEXT_STEPS.md for detailed step-by-step instructions
 
 ---
 
 ## Next Steps After Migration
 
-### For AI Companion Orchestrator
+### For AI Nanny
 1. Review docs/AI-Companion-Software-Dev.md for implementation plan
 2. Set up development environment
 3. Begin Week 1 implementation (Core Engine)

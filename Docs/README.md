@@ -1,77 +1,35 @@
-# AI Companion Orchestration Platform - Proposal Documentation
+# Documentation Moved
 
-## ⚠️ Important Notice
+## Notice: Repository Separation
 
-This folder contains documentation for a **different product concept** than the main Sentinel mental health companion system.
+The documentation previously in this folder has been moved as part of a product separation decision.
 
-### What's in This Folder
+### Background
 
-These documents propose an **AI Companion Orchestration Platform** focused on:
-- Multi-persona AI companions for elderly care
-- Multi-device coordination and synchronization
-- Hardware integration (Raspberry Pi devices)
-- B2B licensing model for nursing homes and device manufacturers
-- Persona hot-swapping and customization
+The `Docs/` folder contained proposals for the **AI Companion Orchestration Platform** (focused on elderly care, multi-device coordination, and B2B licensing), which is a different product from **Sentinel** (a mental health companion system).
 
-### Relationship to Sentinel
+After analysis (see [DOCS_ANALYSIS.md](../DOCS_ANALYSIS.md)), we determined these products should be developed in separate repositories.
 
-**Sentinel** (main repository) is a mental health companion system focused on:
-- Individual users experiencing stress, loneliness, or mental health challenges
-- Crisis detection and professional intervention
-- HIPAA-adjacent compliance
-- Single-user, private therapeutic interactions
+### New Location
 
-### Recommendation
+The documentation has been:
+1. **Staged in this repository:** See [migrated/ai-nanny-docs/](../migrated/ai-nanny-docs/) for the copied documentation
+2. **Target repository:** [https://github.com/serbantica/ai-nanny](https://github.com/serbantica/ai-nanny) (to be created)
 
-**These proposals should be implemented in a SEPARATE repository.**
+### Migration Instructions
 
-See [DOCS_ANALYSIS.md](../DOCS_ANALYSIS.md) for a comprehensive analysis of why these are incompatible products that require separate repositories.
+For detailed steps to complete the migration to the new repository, see:
+- [MIGRATION_GUIDE.md](../MIGRATION_GUIDE.md) - Git commands for preserving history using `git subtree`
+- [SEPARATION_NEXT_STEPS.md](../SEPARATION_NEXT_STEPS.md) - Exact steps to create the new repository and push
 
-### Documents in This Folder
+### Why Separate Repositories?
 
-1. **AI Nanny Platform – Persona Customization.md** (334 lines)
-   - Architecture for multi-persona companion platform
-   - Persona lifecycle and adaptation modes
-   - Fine-tuning capability design
-   - Enterprise positioning strategy
+- **Different target markets:** Mental health (Sentinel) vs. Elderly care (AI Nanny)
+- **Different architectures:** Single-user therapy vs. Multi-device orchestration
+- **Different compliance needs:** HIPAA-adjacent vs. General consumer
+- **Different business models:** B2C SaaS vs. B2B licensing
 
-2. **AI-Companion-Orchestration-Platform.1.txt** (327 lines)
-   - Cloud-native orchestration engine overview
-   - Multi-device coordination architecture
-   - Hardware reference implementation (Raspberry Pi)
-   - B2B licensing and revenue model
-   - Target customers: Amazon, Google, ElliQ, nursing homes
-
-3. **AI-Companion-Software-Dev.md** (126 lines)
-   - Software build guide
-   - Core orchestration engine architecture
-   - Streamlit dashboard for demos
-   - Device runtime for Raspberry Pi
-   - Week-by-week build plan
-
-### Next Steps
-
-If you want to pursue this AI Companion Orchestration Platform:
-
-1. **Create a new repository** (suggested names):
-   - `ai-companion-orchestrator`
-   - `persona-orchestration-platform`
-   - `multi-device-companion-engine`
-
-2. **Move these documents** to the new repository's `/docs` folder
-
-3. **Begin implementation** following the architecture outlined in these documents
-
-4. **Keep Sentinel focused** on mental health features
-
-### Questions?
-
-See the full analysis in [../DOCS_ANALYSIS.md](../DOCS_ANALYSIS.md) which provides:
-- Detailed comparison of both products
-- Technical architecture incompatibilities
-- Business model differences
-- Migration recommendations
-- Alternative approaches (if you must keep them together)
+For full analysis, see [DOCS_ANALYSIS.md](../DOCS_ANALYSIS.md).
 
 ---
 
