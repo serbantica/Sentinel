@@ -33,4 +33,7 @@ class PostGenerator:
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
         )
-        return response.choices[0].message.content
+        content = response.choices[0].message.content
+        if content is None:
+            return ""
+        return content
