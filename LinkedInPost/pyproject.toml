@@ -1,0 +1,20 @@
+[project]
+name = "linkedinpost"
+version = "0.1.0"
+description = "AI-powered LinkedIn post generator"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "openai",
+    "pydantic",
+    "python-dotenv",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest",
+    "black",
+    "ruff",
+]
